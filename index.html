@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mediator — Healthy Communication</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- LANDING -->
+    <section id="landing" class="screen">
+      <header class="brand">
+        <div class="logo">◑</div>
+        <div>
+          <h1>Mediator</h1>
+          <p class="tagline">Say it angry. Send it healthy.</p>
+        </div>
+      </header>
+      <p class="intro">
+        A neutral space for hard conversations. Write honestly — even when you're furious —
+        and the app translates it into a version that's true to your meaning but easier for the
+        other person to hear. Both of you talk through the mediator, so the message lands the way
+        you intended.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <h2>Start a conversation</h2>
+          <input id="create-name" type="text" placeholder="Your name (optional)" maxlength="40" />
+          <button id="create-btn" class="primary">Create room</button>
+          <p class="hint">You'll get a private code to share with the other person.</p>
+        </div>
+        <div class="card">
+          <h2>Join a conversation</h2>
+          <input id="join-code" type="text" placeholder="Room code" maxlength="6" />
+          <input id="join-name" type="text" placeholder="Your name (optional)" maxlength="40" />
+          <button id="join-btn">Join room</button>
+        </div>
+      </div>
+      <p id="landing-error" class="error" hidden></p>
+    </section>
+
+    <!-- ROOM -->
+    <section id="room" class="screen" hidden>
+      <header class="room-head">
+        <div>
+          <strong id="room-code-label">Room —</strong>
+          <span id="room-participants" class="muted"></span>
+        </div>
+        <div class="room-actions">
+          <button id="share-btn" class="ghost">Copy invite</button>
+          <button id="leave-btn" class="ghost">Leave</button>
+        </div>
+      </header>
+
+      <div id="messages" class="messages"></div>
+
+      <div class="composer">
+        <label class="composer-label" for="raw-input">
+          What do you want to say? <span class="muted">Be honest — the mediator will soften it.</span>
+        </label>
+        <textarea id="raw-input" rows="3" placeholder="Type your raw thoughts here…"></textarea>
+
+        <div id="preview" class="preview" hidden>
+          <div class="preview-head">
+            <span class="badge">Healthy version</span>
+            <span id="techniques" class="techniques"></span>
+          </div>
+          <textarea id="mediated-input" rows="3"></textarea>
+          <details class="coach">
+            <summary>Why this works</summary>
+            <p id="coaching"></p>
+          </details>
+        </div>
+
+        <div class="composer-actions">
+          <button id="translate-btn" class="primary">Translate</button>
+          <button id="send-btn" disabled>Send</button>
+          <button id="clear-btn" class="ghost">Clear</button>
+        </div>
+        <p id="composer-error" class="error" hidden></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

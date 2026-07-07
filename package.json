@@ -1,0 +1,8 @@
+{
+  "name": "mediator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Healthy-communication mediator: translate angry messages into kind, clear ones and chat in real time through a neutral third party.",
+  "engines": { "node": ">=18" }
+}

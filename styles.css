@@ -1,0 +1,96 @@
+:root {
+  --bg: #0b1020;
+  --panel: #141b30;
+  --panel-2: #1b2440;
+  --accent: #6d8bff;
+  --accent-2: #57e0c4;
+  --text: #e8ecf8;
+  --muted: #93a0c0;
+  --danger: #ff6b6b;
+  --me: #1f2c52;
+  --them: #16263a;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: radial-gradient(1200px 600px at 70% -10%, #1a2348 0%, var(--bg) 60%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 1rem 2rem;
+}
+#app { width: 100%; max-width: 720px; }
+
+.brand { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1rem; }
+.logo {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: grid; place-items: center; font-size: 1.5rem; color: #0b1020; font-weight: 800;
+}
+h1 { font-size: 1.6rem; }
+.tagline { color: var(--accent-2); font-size: 0.9rem; }
+.intro { color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
+
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.card {
+  background: var(--panel); border: 1px solid #243054; border-radius: var(--radius);
+  padding: 1.1rem; display: flex; flex-direction: column; gap: 0.6rem;
+}
+.card h2 { font-size: 1.05rem; }
+.hint, .muted { color: var(--muted); font-size: 0.8rem; }
+
+input, textarea {
+  width: 100%; padding: 0.7rem 0.85rem; border-radius: 10px;
+  border: 1px solid #2a365c; background: var(--panel-2); color: var(--text);
+  font-size: 0.95rem; font-family: inherit; outline: none; resize: vertical;
+}
+input:focus, textarea:focus { border-color: var(--accent); }
+
+button {
+  cursor: pointer; border: none; border-radius: 10px; padding: 0.7rem 1rem;
+  font-weight: 600; font-size: 0.95rem; color: #fff; background: var(--accent);
+  transition: filter 0.15s ease, opacity 0.15s ease;
+}
+button:hover { filter: brightness(1.08); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+button.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #07101f; }
+button.ghost { background: transparent; border: 1px solid #2a365c; color: var(--muted); }
+
+.error { color: var(--danger); font-size: 0.85rem; margin-top: 0.75rem; }
+
+/* ROOM */
+.room-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.75rem 0; border-bottom: 1px solid #243054; margin-bottom: 1rem;
+}
+.room-actions { display: flex; gap: 0.5rem; }
+.room-actions button { padding: 0.45rem 0.75rem; font-size: 0.82rem; }
+
+.messages { display: flex; flex-direction: column; gap: 0.85rem; min-height: 40vh; max-height: 52vh; overflow-y: auto; padding-right: 4px; }
+.msg { max-width: 85%; padding: 0.8rem 0.95rem; border-radius: var(--radius); }
+.msg .who { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.3rem; }
+.msg .body { line-height: 1.5; white-space: pre-wrap; }
+.msg.me { align-self: flex-end; background: var(--me); border: 1px solid #2c3c6e; }
+.msg.them { align-self: flex-start; background: var(--them); border: 1px solid #21405c; }
+.msg .coach { margin-top: 0.5rem; font-size: 0.8rem; color: var(--accent-2); }
+.msg .tech { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+.chip { font-size: 0.7rem; background: #223; color: var(--muted); border: 1px solid #2a365c; border-radius: 999px; padding: 0.15rem 0.55rem; }
+.empty { color: var(--muted); text-align: center; margin: auto; font-size: 0.9rem; }
+
+.composer { margin-top: 1rem; background: var(--panel); border: 1px solid #243054; border-radius: var(--radius); padding: 1rem; }
+.composer-label { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; }
+.preview { margin-top: 0.75rem; background: var(--panel-2); border: 1px solid #2a365c; border-radius: 10px; padding: 0.75rem; }
+.preview-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+.badge { background: var(--accent-2); color: #07101f; font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 6px; }
+.techniques { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.coach { margin-top: 0.5rem; font-size: 0.82rem; color: var(--muted); }
+.coach summary { cursor: pointer; color: var(--accent-2); }
+.composer-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+
+@media (max-width: 560px) {
+  .cards { grid-template-columns: 1fr; }
+  .msg { max-width: 95%; }
+}
