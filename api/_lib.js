@@ -63,12 +63,31 @@ Respond with ONLY a JSON object of this exact shape:
   "techniques": ["<short label>", "..."]
 }`;
 
+function parseJsonSafe(s) {
+  try {
+    return JSON.parse(s);
+  } catch {}
+  const a = s.indexOf("{");
+  const b = s.lastIndexOf("}");
+  if (a >= 0 && b > a) return JSON.parse(s.slice(a, b + 1));
+  throw new Error("No JSON found in LLM response");
+}
+
 async function callLLM(raw, context) {
   const key = process.env.LLM_API_KEY;
-  if (!key) return null;
 
-  const base = (process.env.LLM_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
-  const model = process.env.LLM_MODEL || "gpt-4o-mini";
+  // With a cloud key: use the configured OpenAI-compatible endpoint (strict JSON mode).
+  // Without one: fall back to a locally running Jan AI at localhost:1337 (no key needed).
+  const useCloud = Boolean(key);
+  const base = (
+    useCloud
+      ? process.env.LLM_BASE_URL || "https://api.openai.com/v1"
+      : process.env.LLM_BASE_URL || "http://localhost:1337/v1"
+  ).replace(/\/$/, "");
+  const model = useCloud
+    ? process.env.LLM_MODEL || "gpt-4o-mini"
+    : process.env.LLM_MODEL || process.env.JAN_MODEL || "gemma-4-26B-A4B-it-UD-IQ4_XS";
+  const authHeader = useCloud ? { Authorization: `Bearer ${key}` } : {};
 
   const recent = (context || [])
     .slice(-6)
@@ -79,27 +98,28 @@ async function callLLM(raw, context) {
     ? `Recent conversation (already mediated):\n${recent}\n\nNow mediate this raw message from ${context.length ? context[context.length - 1].roleLabel : "a participant"}:\n"${raw}"`
     : `Mediate this raw message:\n"${raw}"`;
 
+  const body = {
+    model,
+    temperature: 0.4,
+    max_tokens: 800,
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: userContent },
+    ],
+  };
+  if (useCloud) body.response_format = { type: "json_object" };
+
   const res = await fetch(`${base}/chat/completions`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${key}`,
-    },
-    body: JSON.stringify({
-      model,
-      temperature: 0.4,
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userContent },
-      ],
-    }),
+    headers: { "Content-Type": "application/json", ...authHeader },
+    body: JSON.stringify(body),
   });
 
   if (!res.ok) throw new Error(`LLM error ${res.status}`);
   const data = await res.json();
-  const content = data.choices?.[0]?.message?.content || "{}";
-  return JSON.parse(content);
+  const content = data.choices?.[0]?.message?.content || "";
+  if (!content) throw new Error("Empty LLM response");
+  return parseJsonSafe(content);
 }
 
 // Rule-based fallback used when no LLM key is configured.

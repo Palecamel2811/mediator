@@ -1,6 +1,6 @@
 import { json, getRoom, mediate } from "./_lib.js";
 
-export const config = { runtime: "nodejs" };
+export const config = { runtime: "edge" };
 
 export default async function handler(request) {
   if (request.method === "OPTIONS") return json({});

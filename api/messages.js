@@ -1,6 +1,6 @@
 import { json, getRoom, setRoom, mediate } from "./_lib.js";
 
-export const config = { runtime: "nodejs" };
+export const config = { runtime: "edge" };
 
 function publicView(room) {
   return {
